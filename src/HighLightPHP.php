@@ -10,8 +10,8 @@ class HighLightPHP
 
     public function __construct()
     {
-        $this->languages_dir = 'https://iamjohn.tech/languages';
-        $this->styles_dir = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/';
+        $this->languages_dir = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/languages';
+        $this->styles_dir = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles';
     }
 
     public function highlightCode($code, $language, $style)

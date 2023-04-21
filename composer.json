@@ -13,8 +13,5 @@
         "psr-4": {
             "iamjohndev\\": "src/"
         }
-    },
-    "require": {
-        "highlightjs/highlightjs": "^11.3.1"
     }
 }

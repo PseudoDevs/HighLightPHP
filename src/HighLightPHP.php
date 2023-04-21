@@ -4,38 +4,36 @@ namespace iamjohndev;
 
 class HighLightPHP
 {
-    private $languages;
-    private $theme;
+    private $languages_dir;
+    private $styles_dir;
+    private $highlight_js;
 
-    public function __construct($theme = 'monokai')
+    public function __construct()
     {
-        $this->languages = [
-            'javascript', 'python', 'php', 'java', 'c', 'cpp', 'ruby', 'html', 'css'
-        ];
-        $this->theme = $theme;
+        $this->languages_dir = 'https://iamjohn.tech/languages';
+        $this->styles_dir = 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/';
     }
 
-    public function setTheme($theme)
+    public function highlightCode($code, $language, $style)
     {
-        $this->theme = $theme;
-    }
+        // Load language file
+        $language_file = $this->languages_dir . '/' . $language . '.min.js';
+        $language_content = file_get_contents($language_file);
 
-    public function setLanguages($languages)
-    {
-        $this->languages = $languages;
-    }
+        // Load style file
+        $style_file = $this->styles_dir . '/' . $style . '.min.css';
+        $style_content = file_get_contents($style_file);
 
-    public function highlightCode($code, $language)
-    {
-        if (!in_array($language, $this->languages)) {
-            throw new Exception("Language not supported!");
-        }
+        // Execute code highlighting
+        $result = '<style>' . $style_content . '</style>';
+        $result .= '<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>';
+        $result .= '<pre><code class="language-' . $language . '">' . htmlentities($code) . '</code></pre>';
+        $result .= '<script>document.addEventListener("DOMContentLoaded", (event) => {
+            document.querySelectorAll("pre code").forEach((el) => {
+              hljs.highlightElement(el);
+            });
+          });</script>';
 
-        $html = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js/styles/' . $this->theme . '.min.css">';
-        $html .= '<script src="https://cdn.jsdelivr.net/npm/highlight.js"></script>';
-        $html .= '<script>hljs.highlightAll();</script>';
-        $html .= '<pre><code class="' . $language . '">' . htmlspecialchars($code) . '</code></pre>';
-
-        return $html;
+        return $result;
     }
 }
